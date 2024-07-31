@@ -5,6 +5,14 @@ app.get("/",(req,res)=>{
     
 })
 
+app.get("/home",(req,res)=>{
+    res.status(200).json({
+        message : "successfuly showing"
+    })
+    
+})
+
+
 app.listen(2000,()=>{
     console.log("successful")
 })
