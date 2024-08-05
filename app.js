@@ -17,6 +17,7 @@ app.get("/home/:id",(req,res)=>{
     res.status(200).json({
         message : "successfuly showing"
     })
+
 })
 
 
@@ -24,6 +25,7 @@ app.post("/home/:id",(req,res)=>{
     res.status(200).json({
         message : "successfuly showing"
     })  
+
 })
 
 app.listen(2000,()=>{
