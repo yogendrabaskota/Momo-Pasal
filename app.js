@@ -1,8 +1,7 @@
 const express = require('express')
 const mongoose = requrie('mongoose')
 
-app.get("/",(req,res)=>{
-    
+app.get("/",(req,res)=>{  
 })
 
 app.get("/home",(req,res)=>{
@@ -10,6 +9,7 @@ app.get("/home",(req,res)=>{
         message : "successfuly showing"
     })  
 })
+
 app.patch("/home/:id",(req,res)=>{
     res.status(200).json({
         message : "successfuly showing"
@@ -17,13 +17,11 @@ app.patch("/home/:id",(req,res)=>{
 })
 
 
-
 app.get("/home/:id",(req,res)=>{
     res.status(200).json({
         message : "successfuly showing"
     })
 })
-
 
 app.post("/home/:id",(req,res)=>{
     res.status(200).json({
@@ -34,3 +32,4 @@ app.post("/home/:id",(req,res)=>{
 app.listen(2000,()=>{
     console.log("successful")
 })
+
