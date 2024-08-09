@@ -29,7 +29,7 @@ app.post("/home/:id",(req,res)=>{
     })  
 })
 
-app.listen(2000,()=>{
-    console.log("successful")
+app.listen(3000,()=>{
+    console.log("successfulLy")
 })
 
