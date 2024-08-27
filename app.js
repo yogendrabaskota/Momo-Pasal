@@ -1,32 +1,19 @@
 const express = require('express')
-const mongoose = requrie('mongoose')
+//const mongoose = require('mongoose')
+const app = express()
 
 app.get("/",(req,res)=>{  
+res.status(200).json({
+    
+    message : "I am alive"
 })
-app.get("/home",(req,res)=>{
-    res.status(200).json({
-        message : "successfuly showing"
-    })  
-})
-app.patch("/home/:id",(req,res)=>{
-    res.status(200).json({
-        message : "successfuly showing"
-    })  
-})
-app.get("/home/:id",(req,res)=>{
-    res.status(200).json({
-        message : "successfuly showing"
-    })
 })
 
 
-app.post("/home/:id",(req,res)=>{
-    res.status(200).json({
-        message : "successfuly showing"
-    })  
-})
 
-app.listen(3000,()=>{
-    console.log("successfulLy")
+// listen server
+const PORT = 3000
+app.listen(PORT,()=>{
+    console.log(`server has started at PORT ${PORT}`)
 })
 
