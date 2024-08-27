@@ -5,7 +5,7 @@ const app = express()
 app.get("/",(req,res)=>{  
 res.status(200).json({
     
-    message : "I am alive"
+    message : "I am here"
 })
 })
 
