@@ -21,6 +21,7 @@ app.get("/",(req,res)=>{
     })
 })
 
+
 //register user api
 app.post("/register",async(req,res)=>{
      const {email,password,phoneNumber,username} = req.body
@@ -29,7 +30,17 @@ app.post("/register",async(req,res)=>{
             message : "please provide email,password,phoneNumber"
         })
     }
-   await User.create({ //creating database collection
+   // check that if email user already exist or not 
+   const userFound = await User.find({userEmail : email})
+   if(userFound.length > 0) {
+    return res.status(400).json({
+        message : "user with that email already exist. please use unique email"
+    })
+   }
+
+   
+   //creating database collection
+    await User.create({ 
         userName : username,
         userPhoneNumber : phoneNumber,
         userEmail : email,
@@ -41,6 +52,36 @@ app.post("/register",async(req,res)=>{
     
 })
 
+//login user api
+app.post("/login",async(req,res)=>{
+    const{email, password} = req.body
+    if(!email || !password) {
+        return res.status(400).json({
+            message : "please provide email and password"
+        })
+    }
+    //check if user with that email exists or not
+    const userFound = await User.find({userEmail : email})
+    if(userFound.length == 0) {
+        return res.status(404).json({
+            message : "User with that email is not registered"
+        })
+    }
+    //password check
+    const isMatched = bcrypt.compareSync(password,userFound[0].userPassword)
+    if(isMatched) {
+        res.status(200).json({
+            message : " User logged in successfully "
+        })
+    }else{
+        res.status(404).json({
+            message : "invalid password"
+    
+        }) 
+    }
+
+
+})
 
 
 // listen server
