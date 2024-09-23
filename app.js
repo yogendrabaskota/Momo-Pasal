@@ -7,6 +7,7 @@ const app = express()
 // tell node to use dotenv
 require("dotenv").config()
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 
 app.use(express.json())
@@ -70,8 +71,17 @@ app.post("/login",async(req,res)=>{
     //password check
     const isMatched = bcrypt.compareSync(password,userFound[0].userPassword)
     if(isMatched) {
+        // generate token
+        const token = jwt.sign({id : userFound[0]._id},process.env.SECRET_KEY,{
+        expiresIn : '30d'
+        })
+        
+        
+
+
         res.status(200).json({
-            message : " User logged in successfully "
+            message : " User logged in successfully ",
+            token
         })
     }else{
         res.status(404).json({
