@@ -3,6 +3,7 @@
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const User = require("../../model/userModel")
+const sendEmail = require("../../services/sendEmail")
 
 
 exports.registerUser = async(req,res)=>{
@@ -69,4 +70,36 @@ exports.loginUser = async(req,res)=>{
     
         }) 
     }
+}
+
+//forget password
+exports.forgetPassword = async(req,res) => {
+    const {email} = req.body
+    if(!email) {
+        return res.status(400).json({
+            message : "please enter email "
+        })
+
+    }
+    //check if that email is registered or not
+    const userExist = await User.find({userEmail : email})
+    if(userExist.length == 0){
+        return res.status(404).json({
+            message : "email is not registered"
+        })
+    }
+
+    // send otp to registered email
+    const otp = Math.floor(Math.random() * 10000) // 4 digit otp generated
+    await sendEmail({
+        email : email, // otp received in this email
+        subject : "OTP for your momo account",
+        message : `This is your otp.\n ${otp} \nDon't share it with anyone`
+     }) 
+     res.json({
+        message : "email send successfully"
+     })
+
+   
+ 
 }

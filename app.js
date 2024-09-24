@@ -7,10 +7,7 @@ require("dotenv").config()
 
 //Routes 
 const authRoute = require("./routes/authRoute")
-
 //end routes
-
-
 
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
@@ -41,3 +38,4 @@ app.listen(PORT,()=>{
     console.log(`server has started at PORT ${PORT}`)
 })
 
+// 1:11:00 v-21
