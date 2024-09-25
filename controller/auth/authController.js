@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const User = require("../../model/userModel")
 const sendEmail = require("../../services/sendEmail")
 
-
+//Register user
 exports.registerUser = async(req,res)=>{
     const {email,password,phoneNumber,username} = req.body
     if(!email || !password || !phoneNumber || !username) {
@@ -35,6 +35,7 @@ exports.registerUser = async(req,res)=>{
    
 }
 
+//Login user
 exports.loginUser = async(req,res)=>{
     const{email, password} = req.body
     if(!email || !password) {
@@ -91,15 +92,17 @@ exports.forgetPassword = async(req,res) => {
 
     // send otp to registered email
     const otp = Math.floor(Math.random() * 10000) // 4 digit otp generated
+    // to save otp in database(in otp column) so that we can use it to verify 
+    userExist[0].otp = otp
+    await userExist[0].save()
+
     await sendEmail({
         email : email, // otp received in this email
         subject : "OTP for your momo account",
         message : `This is your otp.\n ${otp} \nDon't share it with anyone`
      }) 
      res.json({
-        message : "email send successfully"
+        message : "OTP sent successfully"
      })
-
-   
  
 }
