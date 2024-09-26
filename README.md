@@ -23,7 +23,7 @@ To run this,
   npm start
 ``` 
 
-### To get API documentation, click [Here]()
+### To get API documentation, click [Here](https://documenter.getpostman.com/view/33322053/2sAXqwZzuD)
 
 
 [comment]: # (## Output :
