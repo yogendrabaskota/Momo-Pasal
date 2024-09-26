@@ -7,6 +7,8 @@ require("dotenv").config()
 
 //Routes 
 const authRoute = require("./routes/authRoute")
+const productRoute = require("./routes/productRoute")
+
 //end routes
 
 app.use(express.json())
@@ -23,6 +25,8 @@ app.get("/",(req,res)=>{
 
 
 app.use("",authRoute)
+app.use("/api",productRoute)
+
 
 //register user api
 //app.post("/register",registerUser)
