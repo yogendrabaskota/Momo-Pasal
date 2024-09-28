@@ -22,9 +22,11 @@ const productSchema = new Schema ({
         type : String,
         enum : ["available","unavailable"]
     }
-})
+},{
+    timestamps : true
+}
+)
 
 const Product = mongoose.model("Product",productSchema)
 module.exports = Product
 
-D-22 35 min 
