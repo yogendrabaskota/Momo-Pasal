@@ -1,14 +1,14 @@
 const jwt = require("jsonwebtoken")
-const {promisify} = require("util").promisify
-
+const {promisify} = require("util")
+const User = require("../model/userModel")
 
 const isAuthenticated = async (req,res,next) => {
-const token = req.headers.authorization
-if(!token) {
-    res.status(403).json({
-        message : "please log in"
-    })
-}
+    const token = req.headers.authorization
+    if(!token) {
+        res.status(403).json({
+            message : "please log in"
+        })
+    }
 //verify token is legit or not
 // jwt.verify(token,process.env.SECRET_KEY,(err,success)=>{
 //     if(err){
@@ -23,22 +23,27 @@ if(!token) {
 //}) 
 
     // another method 
+try { 
+    const decoded = await promisify(jwt.verify)(token,process.env.SECRET_KEY)
+    const doesUserExist = await User.findOne({_id : decoded.id})
+    
 
-const decoded = await promisify(jwt.verify)(token,process.env.SECRET_KEY)
-if(!decoded){
-    return res.status(403).json({
-        message : "do't try to do this"
-    })
-} 
-// check if user decoded.id(userid) exists in the table
-const doesUserExist = await UserActivation.findOne({_id : decoded.id})
-if(!doesUserExist){
-    return res.status(404).json({
-        message : "user doesn't exist with that token/id"
-    })
+    if(!doesUserExist){
+        return res.status(404).json({
+            message : "user doesn't exist with that token/id"
+        })
 
-}
-req.user = "Apple"
-    next()
+    }
+    req.user = "Apple"
+        next()
+
+}catch(error){ 
+    res.status(400).json({
+        message : error.message
+    })
+   
+    
+    }
+
 }
 module.exports = isAuthenticated
