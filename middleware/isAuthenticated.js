@@ -34,7 +34,7 @@ try {
         })
 
     }
-    req.user = "Apple"
+    req.user = doesUserExist
         next()
 
 }catch(error){ 
