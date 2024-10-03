@@ -2,6 +2,9 @@ const Product = require("../../../model/productModel")
 
 //const Product = require("../../model/productModel")
 exports.createProduct = async(req,res) => {
+
+    console.log(req.file)
+    return
     const{productName, productDescription,productPrice,productStatus,productStockQty} = req.body
     if(!productName || !productDescription || !productPrice || !productStatus || !productStockQty){
         return res.status(400).json({
