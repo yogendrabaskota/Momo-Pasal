@@ -4,9 +4,9 @@ const User = require("../model/userModel")
 
 const isAuthenticated = async (req,res,next) => {
     const token = req.headers.authorization
-    if(!token) {
+    if(!token){
        return res.status(403).json({
-            message : "please log in"
+            message : "please login"
         })
     }
 //verify token is legit or not
@@ -24,8 +24,8 @@ const isAuthenticated = async (req,res,next) => {
 
     // another method 
 try { 
-    const decoded = await promisify(jwt.verify)(token,process.env.SECRET_KEY)
-    const doesUserExist = await User.findOne({_id : decoded.id})
+  const decoded = await promisify(jwt.verify)(token,process.env.SECRET_KEY)
+  const doesUserExist = await User.findOne({_id : decoded.id})
     
 
     if(!doesUserExist){

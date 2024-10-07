@@ -9,7 +9,7 @@ const sendEmail = require("../../services/sendEmail")
 exports.registerUser = async(req,res)=>{
     const {email,password,phoneNumber,username} = req.body
     if(!email || !password || !phoneNumber || !username) {
-       res.status(400).json({
+       return res.status(400).json({
            message : "please provide email,password,phoneNumber"
        })
    }

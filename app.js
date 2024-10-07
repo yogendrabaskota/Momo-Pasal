@@ -14,6 +14,9 @@ const productRoute = require("./routes/productRoute")
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
 
+//telling nodejs to give access to the uploads folder 
+app.use(express.static("uploads"))
+
 //database connection 
 connectDatabase()
 
@@ -25,7 +28,7 @@ app.get("/",(req,res)=>{
 
 
 app.use("",authRoute)
-app.use("/api",productRoute)
+app.use("",productRoute)
 
 
 //register user api
@@ -33,6 +36,8 @@ app.use("/api",productRoute)
 
 //login user api
 //app.post("/login",loginUser)
+
+
 
 
 
