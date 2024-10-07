@@ -43,3 +43,44 @@ exports.createProduct = async(req,res) => {
 
 
 }
+
+exports.getProducts = async (req,res) =>{
+    const product = await Product.find()
+    if(product == 0){
+        res.status(400).json({
+            message : "no Product found"
+        })
+    }else{
+        res.status(200).json({
+            message : "Product fetched successfully",
+            product
+       
+        })
+    }
+
+}
+
+exports.getProduct = async (req,res)=> {
+    const{id} = req.params 
+    if(!id){
+        return res.status(400).json({
+            message : "please provide id(productid)",
+            
+        })
+    }
+    const product = await Product.find({_id : id})
+    if(product.length == 0){
+        res.status(400).json({
+            message : "No product found with that id",
+            product : [] 
+        })
+    }else{
+        res.status(200).json({
+            message : "Product fetched successfully",
+            product
+        })
+    }
+
+
+
+} 
