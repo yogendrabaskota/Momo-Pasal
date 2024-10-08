@@ -93,6 +93,28 @@ exports.deleteProduct = async(req,res)=>{
             message : "Please provide ID"
         })
     }
+
+    const oldData = await Product.findById(id)
+    if(!oldData){
+        return res.status(404).json({
+            message : "No data found with that id"
+        })
+    }
+    const oldProductImage = oldData.productImage
+    const lengthToCut = process.env.LIVE_SERVER.length
+    const finalFilePathAfterCut = oldProductImage.slice(lengthToCut)
+ 
+
+   // if(req.file && req.file.filename){
+          // delwtw file from upload folder
+        fs.unlink("./uploads/" + finalFilePathAfterCut,(err)=>{
+            if(err){
+                console.log("Error deleting FIle",err)
+            }else{
+                console.log("File deleted successfully")
+            }
+        })
+    //}
     await Product.findByIdAndDelete(id)
     res.status(200).json({
         message : "Product deleted successfully"
