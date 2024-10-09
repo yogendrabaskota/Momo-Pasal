@@ -2,12 +2,14 @@ const express = require('express')
 const { connectDatabase } = require('./Database/database')
 const app = express()
 
+
 // tell node to use dotenv
 require("dotenv").config()
 
 //Routes 
 const authRoute = require("./routes/authRoute")
 const productRoute = require("./routes/productRoute")
+const adminUssersRoutes = require("./routes/adminUsersRoutes")
 
 //end routes
 
@@ -29,6 +31,7 @@ app.get("/",(req,res)=>{
 
 app.use("",authRoute)
 app.use("",productRoute)
+app.use("/api",adminUssersRoutes)
 
 
 //register user api
