@@ -1,41 +1,42 @@
 const User = require("../../../model/userModel")
-
 exports.getUsers = async(req,res) =>{
-   
-    const users = await User.find().select(["+otp","+isOtpVerified","-__v",])
-    
-
-    
-    const roles = users.map(user => user.role);
-   // const{role} = req.body
-    // if(a == "admin"){
-    //     console.log(a)
-
-    // } else{
-    //     console.log(a)
-    // }
-    const adminUsers = users.filter(user => user.role === 'admin');
-    console.log(roles)
-    if (roles.includes('admin') || users.length > 1) {
-        res.status(200).json({
-            message : "DOnee",
-            data : adminUsers
-        })
-    }else{
-        res.status(400).json({
-            message : "errorrrr"
-        })
-    }
-    return
+    const userId = req.user.id
+    //console.log(req.user)
+    const users = await User.find({_id : {$ne : userId}}).select(["+otp","+isOtpVerified","-__v",])
     if(users.length > 1){
         res.status(200).json({
             message : "Users fetched successfully",
             data : users
         })
     }else{
-        res.status(400).json({
+        res.status(404).json({
             message : "User collection is empty",
             data : []
+        })
+    }
+}
+
+//Delete User Api
+
+exports.deleteUser = async(req,res) =>{
+    const userId = req.params.id
+    if(!userId){
+        res.status(400).json({
+            message : "Please provide userid"
+        })
+
+    }
+    //check that userId exist or not
+
+    const user = await User.findById(userId)
+    if(!user){
+        res.status(400).json({
+            message : "User not found with that userId"
+        })
+    }else{
+        await User.findByIdAndDelete(userId)
+        res.status(200).json({
+            message : "User Deleted Successfully"
         })
     }
 }

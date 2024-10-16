@@ -9,7 +9,8 @@ require("dotenv").config()
 //Routes 
 const authRoute = require("./routes/authRoute")
 const productRoute = require("./routes/productRoute")
-const adminUssersRoutes = require("./routes/adminUsersRoutes")
+const adminUsersRoute = require("./routes/adminUsersRoute")
+const userReviewRoute = require("./routes/userReviewRoute")
 
 //end routes
 
@@ -31,7 +32,8 @@ app.get("/",(req,res)=>{
 
 app.use("",authRoute)
 app.use("",productRoute)
-app.use("/api",adminUssersRoutes)
+app.use("/api",adminUsersRoute)
+app.use("/api",userReviewRoute)
 
 
 //register user api
