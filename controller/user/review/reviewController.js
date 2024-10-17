@@ -1,6 +1,6 @@
-const Product = require("../../model/productModel")
-const Review = require("../../model/reviewModel")
-const { findOneAndDelete } = require("../../model/userModel")
+const Product = require("../../../model/productModel")
+const Review = require("../../../model/reviewModel")
+const { findOneAndDelete } = require("../../../model/userModel")
 
 exports.createReview = async(req,res)=>{
     const userId = req.user.id
@@ -32,6 +32,7 @@ exports.createReview = async(req,res)=>{
     })
 }
 
+/*
 exports.getProductReview = async(req,res)=>{
     const productId = req.params.id
     if(!productId){
@@ -45,15 +46,27 @@ exports.getProductReview = async(req,res)=>{
             message : "Product with that id doesn't exist"
         })
     }
-    const reviews = await Review.find({productId})
+    const reviews = await Review.find({productId}).populate("userId")
     res.status(200).json({
         message : "Review fetched successfully",
         data : reviews
     })
-}
+} */
 
 exports.deleteReview = async(req,res)=>{
     const reviewId = req.params.id
+
+    // check if that user created this review
+    const userId = req.user.id
+    const review = Review.findById(reviewId)
+    const ownweIdOfReview = review.userId
+    if(ownweIdOfReview !== userId){
+        return res.status(400).json({
+            message : "You do not have premission to delete this review "
+        })
+    }
+
+
     if(!reviewId){
         return res.status(400).json({
             message : "Please Provide reviewid"
@@ -63,5 +76,22 @@ exports.deleteReview = async(req,res)=>{
     res.status(200).json({
         message : "Review delete successfully"
     })
+
+}
+
+exports.getMyReviews = async(req,res)=>{
+    const userId = req.user.id
+    const reviews = await Review.find({userId})
+    if(reviews.length == 0){
+        res.status(404).json({
+            message : " You havenot given any review",
+            reviews : []
+        })
+    }else{
+        res.status(200).json({
+            message : "Reviews fetched successfully",
+            reviews 
+        })
+    }
 
 }

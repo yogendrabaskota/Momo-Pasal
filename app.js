@@ -7,10 +7,10 @@ const app = express()
 require("dotenv").config()
 
 //Routes 
-const authRoute = require("./routes/authRoute")
-const productRoute = require("./routes/productRoute")
-const adminUsersRoute = require("./routes/adminUsersRoute")
-const userReviewRoute = require("./routes/userReviewRoute")
+const authRoute = require("./routes/auth/authRoute")
+const productRoute = require("./routes/admin/productRoute")
+const adminUsersRoute = require("./routes/admin/adminUsersRoute")
+const userReviewRoute = require("./routes/user/userReviewRoute")
 
 //end routes
 
@@ -30,8 +30,8 @@ app.get("/",(req,res)=>{
 })
 
 
-app.use("",authRoute)
-app.use("",productRoute)
+app.use("/api",authRoute)
+app.use("/api",productRoute)
 app.use("/api",adminUsersRoute)
 app.use("/api",userReviewRoute)
 
