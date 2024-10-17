@@ -11,6 +11,7 @@ const authRoute = require("./routes/auth/authRoute")
 const productRoute = require("./routes/admin/productRoute")
 const adminUsersRoute = require("./routes/admin/adminUsersRoute")
 const userReviewRoute = require("./routes/user/userReviewRoute")
+const profileRoute = require("./routes/user/userProfileRoute")
 
 //end routes
 
@@ -30,10 +31,11 @@ app.get("/",(req,res)=>{
 })
 
 
-app.use("/api",authRoute)
-app.use("/api",productRoute)
-app.use("/api",adminUsersRoute)
-app.use("/api",userReviewRoute)
+app.use("/api/auth",authRoute)
+app.use("/api/products",productRoute)
+app.use("/api/admin",adminUsersRoute)
+app.use("/api/reviews",userReviewRoute)
+app.use("/api/profile",profileRoute)
 
 
 //register user api
