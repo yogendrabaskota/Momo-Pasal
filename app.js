@@ -3,7 +3,6 @@ const { connectDatabase } = require('./Database/database')
 const app = express()
 
 
-// tell node to use dotenv
 require("dotenv").config()
 
 //Routes 
@@ -13,8 +12,10 @@ const adminUsersRoute = require("./routes/admin/adminUsersRoute")
 const userReviewRoute = require("./routes/user/userReviewRoute")
 const profileRoute = require("./routes/user/userProfileRoute")
 const cartRoute = require("./routes/user/cart/cartController")
+const orderRoute = require("./routes/user/order/orderRoute")
 
 //end routes
+
 
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
@@ -22,7 +23,7 @@ app.use(express.urlencoded({extended : true}))
 //telling nodejs to give access to the uploads folder 
 app.use(express.static("uploads"))
 
-//database connection 
+
 connectDatabase()
 
 app.get("/",(req,res)=>{  
@@ -38,6 +39,7 @@ app.use("/api/admin",adminUsersRoute)
 app.use("/api/reviews",userReviewRoute)
 app.use("/api/profile",profileRoute)
 app.use("/api/cart",cartRoute)
+app.use("/api/orders",orderRoute)
 
 
 //register user api
