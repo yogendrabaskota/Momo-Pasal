@@ -71,5 +71,9 @@ exports.updateMyPassword = async(req,res)=>{
     }
     userData.userPassword = bcrypt.hashSync(newPassword,10)
     await userData.save()
+    res.status(200).json({
+        message :  "Password changed successfully"
+        
+    })
 
 }

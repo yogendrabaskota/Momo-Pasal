@@ -1,4 +1,5 @@
-const Product = require("../../../model/productModel")
+//const Product = require("../../../model/productModel")
+const Product = require("../../model/productModel") 
 
 
 exports.getProducts = async (req,res) =>{
@@ -49,4 +50,3 @@ exports.getProduct = async (req,res)=> {
 
 
 } 
-s

@@ -12,6 +12,7 @@ const productRoute = require("./routes/admin/productRoute")
 const adminUsersRoute = require("./routes/admin/adminUsersRoute")
 const userReviewRoute = require("./routes/user/userReviewRoute")
 const profileRoute = require("./routes/user/userProfileRoute")
+const cartRoute = require("./routes/user/cart/cartController")
 
 //end routes
 
@@ -36,6 +37,7 @@ app.use("/api/products",productRoute)
 app.use("/api/admin",adminUsersRoute)
 app.use("/api/reviews",userReviewRoute)
 app.use("/api/profile",profileRoute)
+app.use("/api/cart",cartRoute)
 
 
 //register user api
