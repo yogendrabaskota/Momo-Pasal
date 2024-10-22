@@ -14,6 +14,7 @@ const userReviewRoute = require("./routes/user/userReviewRoute")
 const profileRoute = require("./routes/user/userProfileRoute")
 const cartRoute = require("./routes/user/cart/cartController")
 const orderRoute = require("./routes/user/order/orderRoute")
+const paymentRoute = require("./routes/user/paymentRoute")
 
 //end routes
 
@@ -42,6 +43,7 @@ app.use("/api/reviews",userReviewRoute)
 app.use("/api/profile",profileRoute)
 app.use("/api/cart",cartRoute)
 app.use("/api/orders",orderRoute)
+app.use("/api/payment",paymentRoute)
 
 
 //register user api

@@ -31,10 +31,14 @@ const orderSchema = new Schema ({
             enum : ['pending','delivered','cancelled','ontheway','preparation'],
             default : 'pending'
     },
-    patymentDetails : {
+    paymentDetails : {
+        pidx : {
+            type : String
+        },
         method : {
             type : String,
-            enum : ['COD','Khalti']
+            enum : ['COD','Khalti'],
+            
         },
         status : {
             type : String,

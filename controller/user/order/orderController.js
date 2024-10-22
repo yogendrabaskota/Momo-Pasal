@@ -107,7 +107,7 @@ exports.deleteMyOrder = async(req,res)=>{
 
 exports.canncelOrder = async(req,res)=>{
     const userId = req.user.id 
-    const { id } = req.body
+    const { id } = req.bodys
    
     const order = await Order.findById(id)
     if(!order){
