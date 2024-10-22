@@ -17,7 +17,6 @@ exports.getAllOrders = async(req,res)=>{
         data : orders
 
     })
-
 }
 
 exports.getSingleOrder = async(req,res)=>{
@@ -29,7 +28,7 @@ exports.getSingleOrder = async(req,res)=>{
         })
     }
     res.status(200).json({
-        message : "Order Fetched successfully",
+        message : "Single Order Fetched successfully",
         data : order
     })
 }
