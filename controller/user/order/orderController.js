@@ -1,4 +1,5 @@
 const Order = require("../../../model/orderSchema")
+const User = require("../../../model/userModel")
 
 exports.createOrder = async(req,res)=>{
     const userId = req.user.id
@@ -94,7 +95,11 @@ exports.deleteMyOrder = async(req,res)=>{
 
         })
     }
-    if(order.user !== userId){
+    //console.log("this is log ", order.user)
+    //console.log("this is log2 ", userId)
+    //console.log(order.user != userId)
+    
+    if(order.user != userId){
         return res.status(400).json({
             message : "You don't have permission of this"
         })

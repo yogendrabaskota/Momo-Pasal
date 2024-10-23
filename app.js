@@ -1,6 +1,7 @@
 const express = require('express')
 const { connectDatabase } = require('./Database/database')
 const app = express()
+const { Server, Socket } = require("socket.io")
 
 
 require("dotenv").config()
@@ -58,7 +59,16 @@ app.use("/api/payment",paymentRoute)
 
 // listen server
 const PORT = process.env.PORT
-app.listen(PORT,()=>{
+const server = app.listen(PORT,()=>{
     console.log(`server has started at PORT ${PORT}`)
 })
 
+const io = new Server(server)
+io.on("connection",(Socket)=>{
+    console.log("Socket Id",Socket.id)
+})
+
+function getSocketIo(){
+    return io
+}
+module.exports.getSocketIo = getSocketIo
