@@ -65,7 +65,7 @@ const server = app.listen(PORT,()=>{
 
 const io = new Server(server)
 io.on("connection",(Socket)=>{
-    console.log("Socket Id",Socket.id)
+    console.log("Socket Id shown ",Socket.id)
 })
 
 function getSocketIo(){
