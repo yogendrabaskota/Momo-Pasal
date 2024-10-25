@@ -28,6 +28,10 @@ app.use(express.static("uploads"))
 
 
 connectDatabase()
+const cors = require("cors")
+app.use(cors({
+    origin : '*'
+}))
 
 app.get("/",(req,res)=>{  
     res.status(200).json({
