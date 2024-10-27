@@ -29,7 +29,7 @@ const Hero = () => {
                           <p className="mt-8 text-gray-700 lg:w-10/12">Sit amet consectetur adipisicing elit. <a href="#" className="text-yellow-700">connection</a> tenetur nihil quaerat suscipit, sunt dignissimos.</p>
                       </div>
                       <div className="ml-auto -mb-24 lg:-mb-100 lg:w-6/12">
-                          <img src="https://tailus.io/sources/blocks/food-delivery/preview/images/food.webp" className="relative" alt="food illustration" loading="lazy" width="4500" height="4500" />
+                          <img src="https://th.bing.com/th/id/OIP.-DB-WF-TPsHn3Bho-vFGFwHaEK?w=295&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" className="relative" alt="food illustration" loading="lazy" width="4500" height="4500" />
                       </div>
                   </div>
               </div>
