@@ -1,27 +1,31 @@
 //import React from 'react'
 
-import axios from "axios"
-import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+//import axios from "axios"
+import { useEffect, } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { add } from "../../../store/cartSlice"
+import { fetchProducts } from "../../../store/productSlice"
 
 const Product = () => {
-    const [products, setProducts] = useState([])
+   // const [products, setProducts] = useState([])
     const dispatch = useDispatch()
+    const {data : products, status} = useSelector((state)=>state.product)
 
-    const fetchProducts = async () => {
-        const response = await axios.get("http://localhost:3000/api/products")
-        if (response.status === 200) {
-            setProducts(response.data.data)
-        }
-    }
+    
 
     useEffect(() => {
-        fetchProducts()
+        dispatch(fetchProducts())
     }, [])
 
     const addToCart = (product)=>{
         dispatch(add(product))
+    }
+
+    if(status == 'loading'){
+      return <h1>loading.....</h1>
+    }
+    if(status == 'error'){
+      return <h1>Error!!! Something went wrong</h1>
     }
 
     return (
