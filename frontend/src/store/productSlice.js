@@ -1,6 +1,7 @@
-/* eslint-disable no-unused-vars */
+
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
-import axios from "axios"
+
+import API from "../http"
 
 
 const STATUSES = Object.freeze({
@@ -14,7 +15,8 @@ const productSlice = createSlice({
     name : "product",
     initialState : {
         data : [],
-        status : STATUSES.SUCCESS
+        status : STATUSES.SUCCESS,
+        selectedProduct : {}
     },
     reducers : {
 
@@ -23,11 +25,14 @@ const productSlice = createSlice({
        },
        setStatus(state,action){
         state.status = action.payload
+       },
+       setSelectedProduct(state,action){
+        state.selectedProduct = action.payload
        }
     },
     extraReducers : (builder) =>{
         builder
-        .addCase(fetchProducts.pending,(state,action)=>{
+        .addCase(fetchProducts.pending,(state)=>{
             state.status =STATUSES.LOADING
 
         })
@@ -35,19 +40,19 @@ const productSlice = createSlice({
             state.data = action.payload
             state.status = STATUSES.SUCCESS
         })
-        .addCase(fetchProducts.rejected,(state,action)=>{
+        .addCase(fetchProducts.rejected,(state)=>{
             state.status = STATUSES.ERROR
         })
     }
 
 })
-export const {setProducts, setStatus} = productSlice.actions
+export const {setProducts, setStatus,setSelectedProduct} = productSlice.actions
 
 export default productSlice.reducer 
 
 
 export const fetchProducts = createAsyncThunk('products/fetch',async()=>{
-    const response = await axios.get("http://localhost:3000/api/products")
+    const response = await API.get("/products")
     const data = response.data.data
     return data
 
@@ -71,3 +76,18 @@ export const fetchProducts = createAsyncThunk('products/fetch',async()=>{
 //         }
 //     }
 // }
+
+export function fetchProductDetails(productId){
+    return async function fetchProductDetailsThunk(dispatch){
+        dispatch(setStatus(STATUSES.LOADING))
+        try {
+            const response = await API.get(`/products/${productId}`)
+            dispatch(setSelectedProduct(response.data.data))
+            dispatch(setStatus(STATUSES.SUCCESS))
+        } catch (error) {
+            console.log(error)
+            dispatch(setStatus(STATUSES.ERROR))
+
+        }
+    }
+}
