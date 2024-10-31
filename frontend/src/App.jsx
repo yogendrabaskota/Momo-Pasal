@@ -8,6 +8,8 @@ import Cart from './pages/cart/Cart'
 import Navbar from './globals/components/navbar/Navbar'
 import { Provider } from 'react-redux'
 import store from './store/store'
+import Login from './pages/auth/login/Login'
+import Register from './pages/auth/register/Register'
 
 
 function App() {
@@ -20,7 +22,8 @@ function App() {
     <Navbar />
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/cart" element={<Cart />} />
     </Routes>
       
