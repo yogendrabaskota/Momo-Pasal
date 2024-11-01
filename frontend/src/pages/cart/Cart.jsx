@@ -1,14 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { remove } from '../../store/cartSlice';
+import {  useSelector } from 'react-redux';
+
 
 const Cart = () => {
-  const products = useSelector((state) => state.cart);
-  const dispatch = useDispatch()
-  const removeItem = (productId)=>{
-    //console.log("clicked")
-    dispatch(remove(productId))
+  const {items:products} = useSelector((state) => state.cart)
 
-  }
+
 
   return (
     <div className="h-screen pt-20 bg-gray-100">
@@ -17,12 +13,12 @@ const Cart = () => {
         
         <div className="rounded-lg md:w-2/3">
           {products.map((product) => (
-            <div key={product._id} className="justify-between p-6 mb-6 bg-white rounded-lg shadow-md sm:flex sm:justify-start">
-              <img src={product.productImage} alt="product-image" className="w-full rounded-lg sm:w-40" />
+            <div key={product.product._id} className="justify-between p-6 mb-6 bg-white rounded-lg shadow-md sm:flex sm:justify-start">
+              <img src={product.product.productImage} alt="product-image" className="w-full rounded-lg sm:w-40" />
               <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                 <div className="mt-5 sm:mt-0">
-                  <h2 className="text-lg font-bold text-gray-900">{product.productName}</h2>
-                  <p className="mt-1 text-xs text-gray-700">{product.productDescription}</p>
+                  <h2 className="text-lg font-bold text-gray-900">{product.product.productName}</h2>
+                  <p className="mt-1 text-xs text-gray-700">{product.product.productDescription}</p>
                 </div>
                 <div className="flex justify-between mt-4 sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                   <div className="flex items-center border-gray-100">
@@ -31,7 +27,7 @@ const Cart = () => {
                     <span className="px-3 py-1 duration-100 bg-gray-100 rounded-r cursor-pointer hover:bg-blue-500 hover:text-blue-50">+</span>
                   </div>
                   <div className="flex items-center space-x-4"  >
-                    <button onClick={()=>removeItem(product._id)} className="w-5 h-5 duration-150 cursor-pointer hover:text-red-500" >Remove</button>
+                    <button  className="w-5 h-5 duration-150 cursor-pointer hover:text-red-500" >Remove</button>
                   {/* <svg onClick={()=>removeItem(product._id)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 duration-150 cursor-pointer hover:text-red-500">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg> */}

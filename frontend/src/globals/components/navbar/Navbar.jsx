@@ -1,11 +1,17 @@
-import {  useSelector } from "react-redux"
+import {  useDispatch, useSelector } from "react-redux"
 import { useNavigate } from 'react-router-dom'
+import { logOut } from "../../../store/authSlice"
+import { useEffect } from "react"
+import { fetchCartItems } from "../../../store/cartSlice"
 //import { fetchCartItems } from "../../../store/cartSlice"
 
 const Navbar = () => {
+
+    const {data:user} = useSelector((state)=>state.auth)
     
     const navigate = useNavigate()
-    const items = useSelector((state)=>state.cart)
+    const {items} = useSelector((state)=>state.cart)
+    const dispatch = useDispatch()
     // const dispatch = useDispatch()
    
 
@@ -14,6 +20,23 @@ const Navbar = () => {
     //     dispatch(fetchCartItems())
       
     //  },[dispatch])
+
+
+    const handleLogout = ()=>{
+        //empty data
+        dispatch(logOut())
+
+
+
+
+        //remove localstorage
+        localStorage.removeItem('token')
+        navigate("/login")
+    }
+
+    useEffect(()=>{
+        dispatch(fetchCartItems())
+    },[dispatch])
 
 
   return (
@@ -54,7 +77,14 @@ const Navbar = () => {
                     </div>
 
                     <div className="w-full space-y-2 border-yellow-200 lg:space-y-0 md:w-max lg:border-l" >
-                        <button onClick={()=>navigate("/register")} type="button" title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition active:bg-yellow-200 focus:bg-yellow-100 sm:w-max">
+                        
+
+                    {
+                        user.length == 0 || (localStorage.getItem('token') == "" || localStorage.getItem("token") == null || localStorage.getItem('token') == undefined) ? 
+                        
+                        (
+                            <>
+                            <button onClick={()=>navigate("/register")} type="button" title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition active:bg-yellow-200 focus:bg-yellow-100 sm:w-max">
                             <span className="block text-yellow-800 font-semibold text-sm">
                                 Sign up
                             </span>
@@ -64,6 +94,19 @@ const Navbar = () => {
                                 Login
                             </span>
                         </button>
+                        </>
+                        ):
+                        <button onClick={handleLogout} type="button" title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max">
+                            <span className="block text-yellow-900 font-semibold text-sm">
+                                Logout
+                            </span>
+                        </button>
+                        
+                        
+                        
+                    }
+
+                        
                     </div>
                 </div>
             </div>

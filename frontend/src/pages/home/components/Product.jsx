@@ -3,7 +3,7 @@
 //import axios from "axios"
 import { useEffect, } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { add } from "../../../store/cartSlice"
+
 import { fetchProducts } from "../../../store/productSlice"
 import { useNavigate } from "react-router-dom"
 
@@ -18,9 +18,9 @@ const Product = () => {
         dispatch(fetchProducts())
     }, [])
 
-    const addToCart = (product)=>{
-        dispatch(add(product))
-    }
+    // const addToCart = (product)=>{
+    //     dispatch(add(product))
+    // }
 
     if(status == 'loading'){
       return <h1>loading.....</h1>
@@ -49,9 +49,9 @@ const Product = () => {
               <div className="flex items-center">
                 <p className="mr-2 text-lg font-semibold text-gray-900 dark:text-white">Rs.{product.productPrice}</p>
                 <p className="text-base font-medium text-gray-500 line-through dark:text-gray-300">$25.00</p>
-                <button onClick={()=>addToCart(product)} className="px-4 py-2 mx-6 font-bold text-red-700 bg-yellow-500 hover:bg-yellow-600">
+                {/* <button onClick={()=>addToCart(product)} className="px-4 py-2 mx-6 font-bold text-red-700 bg-yellow-500 hover:bg-yellow-600">
                     Add TO Cart
-                </button>
+                </button> */}
          
               </div>
             </div>
