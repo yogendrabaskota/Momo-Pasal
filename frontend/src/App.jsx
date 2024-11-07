@@ -11,6 +11,8 @@ import store from './store/store'
 import Login from './pages/auth/login/Login'
 import Register from './pages/auth/register/Register'
 import ProductDetails from './pages/productDetails/ProductDetails'
+import CheckOut from './pages/checkout/Checkout'
+
 
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/productdetails/:id" element={<ProductDetails />} />
+      <Route path='/checkout' element={<CheckOut />} />
     </Routes>
       
     

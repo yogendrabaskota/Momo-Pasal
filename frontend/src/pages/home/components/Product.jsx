@@ -11,7 +11,7 @@ const Product = () => {
    // const [products, setProducts] = useState([])
     const dispatch = useDispatch()
     const {data : products, status} = useSelector((state)=>state.product)
-  const navigate = useNavigate()
+  const navigate = useNavigate() 
     
 
     useEffect(() => {

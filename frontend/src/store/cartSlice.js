@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {createSlice} from "@reduxjs/toolkit"
 import { APIAuthenticated } from "../http"
 import { STATUSES } from "../globals/misc/statuses"
@@ -12,18 +13,31 @@ const cartSlice = createSlice({
         }
 
     ,
-    reducers : {
+    reducers : { 
         setItems(state,action){
             state.items = action.payload
         },
         setStatus(state,action){
             state.status = action.payload
+        },
+        updateItems(state,action){
+            const index = state.items.findIndex(item=>item.product._id === action.payload.productId )
+            if(index  !== -1){
+             state.items[index].quantity = action.payload.quantity
+            }
+            
+        },
+        deleteItem(state,action){
+            // action.payload.productId
+            const index = state.items.findIndex(item=>item.product._id === action.payload.productId)
+            state.items.splice(index,1)
         }
+       
     }
 
 })
 
-export const {setItems, setStatus} = cartSlice.actions
+export const {setItems, setStatus, updateItems, deleteItem} = cartSlice.actions
 export default cartSlice.reducer
 
 export function addToCart(productId){
@@ -54,6 +68,37 @@ export function fetchCartItems(){
             console.log(error)
             dispatch(setStatus(STATUSES.ERROR))
 
+        }
+    }
+}
+
+
+export function updateCartItem(productId,quantity){
+    return async function updateCartItemThunk(dispatch){
+        dispatch(setStatus(STATUSES.LOADING))
+        try {
+            const response = await APIAuthenticated.patch(`/cart/${productId}`,{quantity})
+          
+            dispatch(updateItems({productId,quantity}))
+            dispatch(setStatus(STATUSES.SUCCESS))
+        } catch (error) {
+            console.log(error)
+            dispatch(setStatus(STATUSES.ERROR))
+
+        }
+    }
+}
+
+export function deleteCartItem(productId){
+    return async function deleteCartItemThunk(dispatch){
+        dispatch(setStatus(STATUSES.LOADING))
+        try {
+            const response = await APIAuthenticated.delete(`/cart/${productId}`)
+            dispatch(deleteItem({productId}))
+            dispatch(setStatus(STATUSES.SUCCESS))
+        } catch (error) {
+            console.log(error)
+            dispatch(setStatus(STATUSES.ERROR))
         }
     }
 }
