@@ -1,9 +1,71 @@
-/* eslint-disable no-unused-vars */
-
+import { useDispatch, useSelector } from 'react-redux'
+import {useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { createOrder } from '../../store/checkoutSlice'
+import { STATUSES } from '../../globals/misc/statuses'
+import { useNavigate } from "react-router-dom"
 
 const CheckOut = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const {items : products} = useSelector((state)=>state.cart) 
+  
+   const {register,handleSubmit,formState} = useForm()
+   const [paymentMethod,setPaymenytMethod] = useState("COD")
+
+   const {status, data} = useSelector((state)=>state.checkout)
+  // console.log(paymentMethod)
+   const subTotal = products.reduce((amount,item)=>item.quantity *item.product.productPrice + amount, 0)
+  // console.log(subTotal)
+  const shippingAmount = 100 //fixed shipping amount
+  const totalAmount = subTotal + shippingAmount
+  //console.log(totalAmount)
+  
+
+   const handleOrder = (data)=>{
+    const orderDetails = {
+      shippingAddress : data.shippingAddress,
+      
+    
+      totalAmount : totalAmount,
+      items: products,
+      paymentDetails : {
+        method : paymentMethod
+      },
+      phoneNumber : data.phoneNumber 
+    }
+  
+    dispatch(createOrder(orderDetails))
+  }
+   const proceedForKhaltiPayment = ()=>{
+
+    if(status === STATUSES.SUCCESS && paymentMethod === "COD"  && data.length > 0){
+      alert("Order placed successfully")
+    }
+
+    if(status === STATUSES.SUCCESS && paymentMethod === "Khalti"  && data.length > 0){
+      const { totalAmount, _id } = data[data.length -1]
+      navigate(`/khalti?orderid=${_id}&totalamount=${totalAmount}`)
+    }
+    // }else{
+    //  // alert("Something went wrong")
+    // }
+
+
+   }
+   useEffect(()=>{
+    proceedForKhaltiPayment()
+
+   },[status,data])
+    
+
    
 
+   const handlePaymentChange = (e) =>{
+    setPaymenytMethod(e.target.value)
+
+   }
 
   return (
     <>
@@ -19,14 +81,21 @@ const CheckOut = () => {
     <p className="text-gray-400">Check your items. And select a suitable shipping method.</p>
     <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
 
-        <div  className="flex flex-col rounded-lg bg-white sm:flex-row">
-        <img className="m-2 h-24 w-28 rounded-md border object-cover object-center" src="https://images.unsplash.com/flagged/photo-1556637640-2c80d3201be8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c25lYWtlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt="" />
-        <div className="flex w-full flex-col px-4 py-4">
-          <span className="font-semibold"></span>
-          <span className="float-right text-gray-400">Qty : </span>
-          <p className="text-lg font-bold">Rs.  </p>
-        </div>
-      </div>
+       {products.length  > 0 && products.map((product)=>{
+        return(
+          <>
+          <div key={product.product._id}  className="flex flex-col rounded-lg bg-white sm:flex-row">
+            <img className="m-2 h-24 w-28 rounded-md border object-cover object-center" src="https://images.unsplash.com/flagged/photo-1556637640-2c80d3201be8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c25lYWtlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt="" />
+            <div className="flex w-full flex-col px-4 py-4">
+              <span className="font-semibold">{product.product.productName}</span>
+              <span className="float-right text-gray-400">Qty : {product.quantity} </span>
+              <p className="text-lg font-bold">Rs. {product.product.productPrice} </p>
+            </div>
+          </div>
+          
+          </>
+        )
+       })}
     
  
     </div>
@@ -34,7 +103,7 @@ const CheckOut = () => {
     <p className="mt-8 text-lg font-medium">Payment Methods</p>
     <form className="mt-5 grid gap-6">
       <div className="relative">
-        <input className="peer hidden" id="radio_1" type="radio" name="radio" value="COD"  />
+        <input className="peer hidden" id="radio_1" type="radio" name="radio" value="COD" checked={paymentMethod==="COD"} onChange={handlePaymentChange} />
         <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
         <label className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4" htmlFor="radio_1">
           <img className="w-14 object-contain" src="/images/naorrAeygcJzX0SyNI4Y0.png" alt="" />
@@ -44,7 +113,7 @@ const CheckOut = () => {
         </label>
       </div>
       <div className="relative">
-        <input className="peer hidden" id="radio_2" type="radio" value="khalti" name="radio"   />
+        <input className="peer hidden" id="radio_2" type="radio" value="Khalti" name="radio" onChange={handlePaymentChange}  />
         <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-white"></span>
         <label className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4" htmlFor="radio_2">
           <img className="w-14 object-contain" src="/images/oG8xsl3xsOkwkMsrLGKM4.png" alt="" />
@@ -55,15 +124,19 @@ const CheckOut = () => {
       </div>
     </form>
   </div>
- <form>
+ <form onSubmit={handleSubmit((data)=>{
+  handleOrder(data)
+  //console.log(totalAmount)
+
+ })} noValidate>
  <div className="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
     <p className="text-xl font-medium">Payment Details</p>
     <p className="text-gray-400">Complete your order by providing your payment details.</p>
     <div className="">
       <label htmlFor="email" className="mt-4 mb-2 block text-sm font-medium">Email</label>
       <div className="relative">
-        <input type="text" id="email" name="email" className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="your.email@gmail.com" />
-        <p></p>
+        <input type="text" id="email" name="email" className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="your.email@gmail.com" {...register("email",{required : "Email is required"})} />
+        <p><b> {formState.errors.email && formState.errors.email.message}</b> </p>
 
 
         <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
@@ -74,17 +147,17 @@ const CheckOut = () => {
       </div>
       <label htmlFor="phoneNumber" className="mt-4 mb-2 block text-sm font-medium">Phone Number</label>
       <div className="relative">
-        <input type="number" id="phoneNumber" name="phoneNumber" className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="Your Phone Number" />
+        <input type="number" id="phoneNumber" name="phoneNumber" className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="Your Phone Number" {...register('phoneNumber',{required : "phone Number is required"})} />
 
-        <p></p>
+        <p> <b>{formState.errors.phoneNumber && formState.errors.phoneNumber.message}</b> </p>
 
       </div>
  
       <label htmlFor="billing-address" className="mt-4 mb-2 block text-sm font-medium">Shipping Address</label>
       <div className="flex flex-col sm:flex-row">
         <div className="relative flex-shrink-0 sm:w-7/12">
-          <input type="text" id="billing-address" name="shippingAddress" className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="Street Address"  />
-          <p></p>
+          <input type="text" id="billing-address" name="shippingAddress" className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500" placeholder="Street Address" {...register('shippingAddress',{required : "Shipping address is required"})} />
+          <p> <b>{formState.errors.shippingAddress && formState.errors.shippingAddress.message}</b> </p>
           <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
             <img className="h-4 w-4 object-contain" src="https://flagpack.xyz/_nuxt/4c829b6c0131de7162790d2f897a90fd.svg" alt="" />
           </div>
@@ -96,16 +169,16 @@ const CheckOut = () => {
       <div className="mt-6 border-t border-b py-2">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium text-gray-900">Subtotal</p>
-          <p className="font-semibold text-gray-900">Rs </p>
+          <p className="font-semibold text-gray-900">Rs {subTotal} </p>
         </div>
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium text-gray-900">Shipping</p>
-          <p className="font-semibold text-gray-900">Rs </p>
+          <p className="font-semibold text-gray-900">Rs {shippingAmount} </p>
         </div>
       </div>
       <div className="mt-6 flex items-center justify-between">
         <p className="text-sm font-medium text-gray-900">Total</p>
-        <p className="text-2xl font-semibold text-gray-900">Rs </p>
+        <p className="text-2xl font-semibold text-gray-900">Rs {totalAmount} </p>
       </div>
     </div>
 
