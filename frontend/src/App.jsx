@@ -13,6 +13,7 @@ import Register from './pages/auth/register/Register'
 import ProductDetails from './pages/productDetails/ProductDetails'
 import CheckOut from './pages/checkout/Checkout'
 import Khalti from './pages/khalti/Khalti'
+import KhaltiSuccess from './pages/success/KhaltiSuccess'
 
 
 
@@ -31,7 +32,7 @@ function App() {
       <Route path="/cart" element={<Cart />} />
       <Route path="/productdetails/:id" element={<ProductDetails />} />
       <Route path='/checkout' element={<CheckOut />} />
-      <Route path='/khalti' element={<Khalti />} />
+      <Route path='/success' element={<KhaltiSuccess />} />
     </Routes>
       
     

@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
 import { useDispatch, useSelector } from 'react-redux'
 import {useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { createOrder } from '../../store/checkoutSlice'
 import { STATUSES } from '../../globals/misc/statuses'
 import { useNavigate } from "react-router-dom"
+import { APIAuthenticated } from '../../http'
+import axios from 'axios'
 
 const CheckOut = () => {
   const dispatch = useDispatch()
@@ -45,8 +48,8 @@ const CheckOut = () => {
     }
 
     if(status === STATUSES.SUCCESS && paymentMethod === "Khalti"  && data.length > 0){
-      const { totalAmount, _id } = data[data.length -1]
-      navigate(`/khalti?orderid=${_id}&totalamount=${totalAmount}`)
+      const { totalAmount,_id:orderId } = data[data.length -1]
+      handleKhalti(orderId,totalAmount)
     }
     // }else{
     //  // alert("Something went wrong")
@@ -65,6 +68,23 @@ const CheckOut = () => {
    const handlePaymentChange = (e) =>{
     setPaymenytMethod(e.target.value)
 
+   }
+
+
+   const handleKhalti = async(orderId,totalAmount) =>{
+     try {
+      const response = await APIAuthenticated.post(`/payment`,{orderId,amount:totalAmount})
+     // const response = await axios.post(`localhost:3000/api/payment/`,{orderId,amount:totalAmount})
+      console.log(response.data)
+      if(response.status === 200){
+        window.location.href = response.data.paymentUrl
+      //navigate(response.data.paymentUrl)
+      }
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
    }
 
   return (
@@ -181,10 +201,16 @@ const CheckOut = () => {
         <p className="text-2xl font-semibold text-gray-900">Rs {totalAmount} </p>
       </div>
     </div>
+    {
+      paymentMethod === 'COD' ? (
+        <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">Place Order</button>
+      ) : (
+        <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white" style={{backgroundColor:'purple'}}>Pay With Khalti</button>
 
-      <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">Place Order</button>
-    <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white" style={{backgroundColor:'purple'}}>Pay With Khalti</button>
-  
+      )
+    }
+      
+    
   </div>
  </form>
 </div>
