@@ -1,5 +1,5 @@
 import {  useDispatch, useSelector } from "react-redux"
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { logOut } from "../../../store/authSlice"
 import { useEffect } from "react"
 import { fetchCartItems } from "../../../store/cartSlice"
@@ -59,20 +59,24 @@ const Navbar = () => {
                     <div className="text-gray-600 lg:pr-4">
                         <ul className="space-y-6 tracking-wide font-medium text-sm md:flex md:space-y-0">
                             <li>
-                                <a href="#" className="block md:px-4 transition hover:text-yellow-700">
-<span>I have a restaurant</span>
-                                </a>
+                                <Link to="/profile" className="block md:px-4 transition hover:text-yellow-700">
+<span>Profile</span>
+                                </Link>
                             </li>
                             <li>
                                 <a href="#" className="block md:px-4 transition hover:text-yellow-700">
 <span>Wishlist</span>
                                 </a>
                             </li>
-                            <li>
+                            {
+                                items.length !== 0 && (
+                                    <li>
                                 <a onClick={()=>navigate("/cart")} className="block md:px-4 transition hover:text-yellow-700">
 <span>Cart <sup>{items.length}</sup></span>
                                 </a>
                             </li>
+                                )
+                            }
                         </ul>
                     </div>
 

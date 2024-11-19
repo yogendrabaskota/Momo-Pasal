@@ -12,8 +12,9 @@ import Login from './pages/auth/login/Login'
 import Register from './pages/auth/register/Register'
 import ProductDetails from './pages/productDetails/ProductDetails'
 import CheckOut from './pages/checkout/Checkout'
-import Khalti from './pages/khalti/Khalti'
+
 import KhaltiSuccess from './pages/success/KhaltiSuccess'
+import UserProfile from './pages/profile/UserProfile'
 
 
 
@@ -33,6 +34,7 @@ function App() {
       <Route path="/productdetails/:id" element={<ProductDetails />} />
       <Route path='/checkout' element={<CheckOut />} />
       <Route path='/success' element={<KhaltiSuccess />} />
+      <Route path='/profile' element={<UserProfile />} />
     </Routes>
       
     
