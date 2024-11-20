@@ -15,6 +15,7 @@ import CheckOut from './pages/checkout/Checkout'
 
 import KhaltiSuccess from './pages/success/KhaltiSuccess'
 import UserProfile from './pages/profile/UserProfile'
+import MyOrders from './pages/myOrders/MyOrders'
 
 
 
@@ -35,6 +36,7 @@ function App() {
       <Route path='/checkout' element={<CheckOut />} />
       <Route path='/success' element={<KhaltiSuccess />} />
       <Route path='/profile' element={<UserProfile />} />
+      <Route path='/myorders' element={<MyOrders />} />
     </Routes>
       
     
