@@ -1,122 +1,249 @@
-import {  useDispatch, useSelector } from "react-redux"
-import { Link, useNavigate } from 'react-router-dom'
-import { logOut } from "../../../store/authSlice"
-import { useEffect } from "react"
-import { fetchCartItems } from "../../../store/cartSlice"
-//import { fetchCartItems } from "../../../store/cartSlice"
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logOut } from "../../../store/authSlice";
+import { useEffect } from "react";
+import { fetchCartItems } from "../../../store/cartSlice";
 
 const Navbar = () => {
+  const { data: user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { items } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
-    const {data:user} = useSelector((state)=>state.auth)
-    
-    const navigate = useNavigate()
-    const {items} = useSelector((state)=>state.cart)
-    const dispatch = useDispatch()
-    // const dispatch = useDispatch()
-   
+  const handleLogout = () => {
+    dispatch(logOut());
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
-
-    // useEffect(()=>{
-    //     dispatch(fetchCartItems())
-      
-    //  },[dispatch])
-
-
-    const handleLogout = ()=>{
-        //empty data
-        dispatch(logOut())
-
-
-
-
-        //remove localstorage
-        localStorage.removeItem('token')
-        navigate("/login")
-    }
-
-    useEffect(()=>{
-        dispatch(fetchCartItems())
-    },[dispatch])
-
+  useEffect(() => {
+    dispatch(fetchCartItems());
+  }, [dispatch]);
 
   return (
-    <nav className="fixed z-10 w-full bg-white md:absolute md:bg-transparent">
-        <div className="container m-auto px-2 md:px-12 lg:px-7">
-            <div className="flex flex-wrap items-center justify-between py-3 gap-6 md:py-4 md:gap-0">
-                <div className="w-full px-6 flex justify-between lg:w-max md:px-0">
-                    <a onClick={()=>navigate("/")} aria-label="logo" className="flex space-x-2 items-center">
-                        <img src="https://tailus.io/sources/blocks/food-delivery/preview/images/icon.png" className="w-12" alt="tailus logo" width="144" height="133" />
-                        <span className="text-2xl font-bold text-yellow-900">MOMO <span className="text-yellow-700">Pasal</span></span>
-                    </a>
+    <nav
+      className="fixed z-10 w-full bg-white shadow-sm"
+      style={{ backgroundColor: "#FFF8F0" }}
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            <img
+              src="../../../../public/logo.png"
+              className="w-10 h-10"
+              alt="MOMO Pasal logo"
+            />
+            <span
+              className="ml-2 text-2xl font-bold"
+              style={{ color: "#E63946" }}
+            >
+              MOMO <span style={{ color: "#2D3142" }}>Pasal</span>
+            </span>
+          </div>
 
-                    <button aria-label="humburger" id="hamburger" className="relative w-10 h-10 -mr-2 lg:hidden">
-                        <div aria-hidden="true" id="line" className="inset-0 w-6 h-0.5 m-auto rounded bg-yellow-900 transtion duration-300"></div>
-                        <div aria-hidden="true" id="line2" className="inset-0 w-6 h-0.5 mt-2 m-auto rounded bg-yellow-900 transtion duration-300"></div>
-                    </button>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <div className="flex items-center space-x-6">
+              <Link
+                to="/profile"
+                className="font-medium transition-colors duration-200 hover:text-red-500"
+                style={{ color: "#2D3142" }}
+              >
+                Profile
+              </Link>
+              <Link
+                to="/wishlist"
+                className="font-medium transition-colors duration-200 hover:text-red-500"
+                style={{ color: "#2D3142" }}
+              >
+                Wishlist
+              </Link>
+              {items.length > 0 && (
+                <div
+                  className="relative cursor-pointer"
+                  onClick={() => navigate("/cart")}
+                >
+                  <span
+                    className="font-medium transition-colors duration-200 hover:text-red-500"
+                    style={{ color: "#2D3142" }}
+                  >
+                    Cart
+                  </span>
+                  <span
+                    className="absolute -top-2 -right-5 flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold"
+                    style={{
+                      backgroundColor: "#E63946",
+                      color: "white",
+                    }}
+                  >
+                    {items.length}
+                  </span>
                 </div>
-
-                <div className="hidden w-full lg:flex flex-wrap justify-end items-center space-y-6 p-6 rounded-xl bg-white md:space-y-0 md:p-0 md:flex-nowrap md:bg-transparent lg:w-7/12">
-                    <div className="text-gray-600 lg:pr-4">
-                        <ul className="space-y-6 tracking-wide font-medium text-sm md:flex md:space-y-0">
-                            <li>
-                                <Link to="/profile" className="block md:px-4 transition hover:text-yellow-700">
-<span>Profile</span>
-                                </Link>
-                            </li>
-                            <li>
-                                <a href="#" className="block md:px-4 transition hover:text-yellow-700">
-<span>Wishlist</span>
-                                </a>
-                            </li>
-                            {
-                                items.length !== 0 && (
-                                    <li>
-                                <a onClick={()=>navigate("/cart")} className="block md:px-4 transition hover:text-yellow-700">
-<span>Cart <sup>{items.length}</sup></span>
-                                </a>
-                            </li>
-                                )
-                            }
-                        </ul>
-                    </div>
-
-                    <div className="w-full space-y-2 border-yellow-200 lg:space-y-0 md:w-max lg:border-l" >
-                        
-
-                    {
-                        user.length == 0 || (localStorage.getItem('token') == "" || localStorage.getItem("token") == null || localStorage.getItem('token') == undefined) ? 
-                        
-                        (
-                            <>
-                            <button onClick={()=>navigate("/register")} type="button" title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition active:bg-yellow-200 focus:bg-yellow-100 sm:w-max">
-                            <span className="block text-yellow-800 font-semibold text-sm">
-                                Sign up
-                            </span>
-                        </button>
-                        <button onClick={()=>navigate("/login")} type="button" title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max">
-                            <span className="block text-yellow-900 font-semibold text-sm">
-                                Login
-                            </span>
-                        </button>
-                        </>
-                        ):
-                        <button onClick={handleLogout} type="button" title="Start buying" className="w-full py-3 px-6 text-center rounded-full transition bg-yellow-300 hover:bg-yellow-100 active:bg-yellow-400 focus:bg-yellow-300 sm:w-max">
-                            <span className="block text-yellow-900 font-semibold text-sm">
-                                Logout
-                            </span>
-                        </button>
-                        
-                        
-                        
-                    }
-
-                        
-                    </div>
-                </div>
+              )}
             </div>
-        </div>
-    </nav>
-  )
-}
 
-export default Navbar
+            {/* Auth Buttons */}
+            <div className="flex items-center space-x-4 ml-4">
+              {!user || !localStorage.getItem("token") ? (
+                <>
+                  <button
+                    onClick={() => navigate("/register")}
+                    className="px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+                    style={{
+                      border: "1px solid #E63946",
+                      color: "#E63946",
+                      backgroundColor: "transparent",
+                      hover: {
+                        backgroundColor: "#E63946",
+                        color: "white",
+                      },
+                    }}
+                  >
+                    Sign Up
+                  </button>
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+                    style={{
+                      backgroundColor: "#E63946",
+                      color: "white",
+                    }}
+                  >
+                    Login
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 rounded-lg font-medium transition-colors duration-200"
+                  style={{
+                    backgroundColor: "#2D3142",
+                    color: "white",
+                  }}
+                >
+                  Logout
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
+            {items.length > 0 && (
+              <div
+                className="relative mr-4 cursor-pointer"
+                onClick={() => navigate("/cart")}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  style={{ color: "#2D3142" }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+                <span
+                  className="absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold"
+                  style={{
+                    backgroundColor: "#E63946",
+                    color: "white",
+                  }}
+                >
+                  {items.length}
+                </span>
+              </div>
+            )}
+            <button
+              className="inline-flex items-center justify-center p-2 rounded-md focus:outline-none"
+              aria-label="Main menu"
+              style={{ color: "#2D3142" }}
+            >
+              <svg
+                className="block h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Navigation (would need JS to toggle) */}
+      {/* <div className="md:hidden hidden">
+                <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <Link 
+                        to="/profile" 
+                        className="block px-3 py-2 rounded-md text-base font-medium"
+                        style={{ color: '#2D3142' }}
+                    >
+                        Profile
+                    </Link>
+                    <Link 
+                        to="/wishlist" 
+                        className="block px-3 py-2 rounded-md text-base font-medium"
+                        style={{ color: '#2D3142' }}
+                    >
+                        Wishlist
+                    </Link>
+                    {!user || !localStorage.getItem('token') ? (
+                        <div className="mt-4">
+                            <button 
+                                onClick={() => navigate("/register")}
+                                className="block w-full px-3 py-2 rounded-md text-base font-medium mb-2"
+                                style={{ 
+                                    backgroundColor: '#E63946',
+                                    color: 'white'
+                                }}
+                            >
+                                Sign Up
+                            </button>
+                            <button 
+                                onClick={() => navigate("/login")}
+                                className="block w-full px-3 py-2 rounded-md text-base font-medium"
+                                style={{ 
+                                    border: '1px solid #E63946',
+                                    color: '#E63946'
+                                }}
+                            >
+                                Login
+                            </button>
+                        </div>
+                    ) : (
+                        <button 
+                            onClick={handleLogout}
+                            className="block w-full px-3 py-2 rounded-md text-base font-medium mt-4"
+                            style={{ 
+                                backgroundColor: '#2D3142',
+                                color: 'white'
+                            }}
+                        >
+                            Logout
+                        </button>
+                    )}
+                </div>
+            </div> */}
+    </nav>
+  );
+};
+
+export default Navbar;
