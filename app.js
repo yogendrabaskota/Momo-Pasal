@@ -23,8 +23,29 @@ const paymentRoute = require("./routes/user/paymentRoute");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 //telling nodejs to give access to the uploads folder
-app.use(express.static("uploads"));
+
+
+app.use(express.json())
+app.use(express.urlencoded({extended : true}))
+
+//telling nodejs to give access to the uploads folder 
+app.use(express.static("uploads"))
+
+
+connectDatabase()
+const cors = require("cors")
+app.use(cors({
+    origin : '*'
+}))
+
+app.get("/",(req,res)=>{  
+    res.status(200).json({
+    message : "I am here"
+    })
+})
+
 
 connectDatabase();
 
@@ -51,6 +72,7 @@ app.use("/api/payment", paymentRoute);
 //app.post("/login",loginUser)
 
 // listen server
+
 const PORT = process.env.PORT;
 const server = app.listen(PORT, () => {
   console.log(`server has started at PORT ${PORT}`);
@@ -63,5 +85,6 @@ io.on("connection", (Socket) => {
 
 function getSocketIo() {
   return io;
+
 }
 module.exports.getSocketIo = getSocketIo;
