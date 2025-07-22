@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -15,6 +16,7 @@ import KhaltiSuccess from "./pages/success/KhaltiSuccess";
 import UserProfile from "./pages/profile/UserProfile";
 import MyOrders from "./pages/myOrders/MyOrders";
 import Footer from "./globals/components/footer/Footer";
+// import OrderDetails from "./pages/orderDetails/OrderDetails";
 import OrderDetails from "./pages/orderDetails/OrderDetails";
 
 import VerifyOtp from "./pages/auth/verifyOtp/VerifyOtp";
