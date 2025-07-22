@@ -53,37 +53,54 @@ exports.createProduct = async (req, res) => {
 };
 
 exports.deleteProduct = async (req, res) => {
-  const { id } = req.params;
-  if (!id) {
-    return res.status(400).json({
-      message: "Please provide ID",
-    });
-  }
+  try {
+    const { id } = req.params;
 
-  const oldData = await Product.findById(id);
-  if (!oldData) {
-    return res.status(404).json({
-      message: "No data found with that id",
-    });
-  }
-  const oldProductImage = oldData.productImage;
-  const lengthToCut = process.env.LIVE_SERVER.length;
-  const finalFilePathAfterCut = oldProductImage.slice(lengthToCut);
-
-  // if(req.file && req.file.filename){
-  // delwtw file from upload folder
-  fs.unlink("./uploads/" + finalFilePathAfterCut, (err) => {
-    if (err) {
-      console.log("Error deleting FIle", err);
-    } else {
-      console.log("File deleted successfully");
+    // Validate ID
+    if (!id) {
+      return res.status(400).json({
+        message: "Please provide ID",
+      });
     }
-  });
-  //}
-  await Product.findByIdAndDelete(id);
-  res.status(200).json({
-    message: "Product deleted successfully",
-  });
+
+    // Find and delete product
+    const product = await Product.findByIdAndDelete(id);
+
+    if (!product) {
+      return res.status(404).json({
+        message: "No product found with that id",
+      });
+    }
+
+    // Handle image deletion if it exists
+    if (product.productImage && process.env.LIVE_SERVER) {
+      const lengthToCut = process.env.LIVE_SERVER.length;
+
+      // Only proceed if the image URL starts with LIVE_SERVER
+      if (product.productImage.startsWith(process.env.LIVE_SERVER)) {
+        const finalFilePathAfterCut = product.productImage.slice(lengthToCut);
+
+        fs.unlink("./uploads/" + finalFilePathAfterCut, (err) => {
+          if (err) {
+            console.log("Error deleting file:", err);
+          } else {
+            console.log("File deleted successfully");
+          }
+        });
+      }
+    }
+
+    res.status(200).json({
+      message: "Product deleted successfully",
+      deletedProduct: product,
+    });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    res.status(500).json({
+      message: "Error deleting product",
+      error: error.message,
+    });
+  }
 };
 
 exports.editProduct = async (req, res) => {

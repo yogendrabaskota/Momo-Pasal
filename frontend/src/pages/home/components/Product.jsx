@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../../store/productSlice";
 import { useNavigate } from "react-router-dom";
-import { FaStar, FaShoppingCart } from "react-icons/fa";
+import { FaStar, FaShoppingCart, FaTrash } from "react-icons/fa";
+import axios from "axios";
 
 export default function Product() {
   const navigate = useNavigate();
@@ -12,6 +13,28 @@ export default function Product() {
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  const token = localStorage.getItem("token");
+  const handleDeleteProduct = async (productId, e) => {
+    e.stopPropagation();
+    try {
+      const response = await axios.delete(
+        `https://momo-pasal.onrender.com/api/products/${productId}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      if (response.status === 200) {
+        // Refresh the product list after successful deletion
+        dispatch(fetchProducts());
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      alert("Failed to delete product");
+    }
+  };
 
   if (status === "loading") {
     return (
@@ -68,11 +91,26 @@ export default function Product() {
           {products.map((product) => (
             <div
               key={product._id}
-              onClick={() => navigate(`/productdetails/${product._id}`)}
-              className="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer"
+              className="bg-white rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative"
             >
+              {/* Delete Button */}
+              <button
+                onClick={(e) => handleDeleteProduct(product._id, e)}
+                className="absolute top-3 right-3 p-2 rounded-full z-10"
+                style={{
+                  backgroundColor: "#E63946",
+                  color: "white",
+                }}
+                title="Delete product"
+              >
+                <FaTrash size={14} />
+              </button>
+
               {/* Product Image */}
-              <div className="relative">
+              <div
+                className="relative cursor-pointer"
+                onClick={() => navigate(`/productdetails/${product._id}`)}
+              >
                 <img
                   className="w-full h-56 object-cover"
                   src={product.productImage}
@@ -93,8 +131,9 @@ export default function Product() {
               {/* Product Info */}
               <div className="p-6">
                 <h2
-                  className="text-xl font-bold mb-2 truncate"
+                  className="text-xl font-bold mb-2 truncate cursor-pointer"
                   style={{ color: "#2D3142" }}
+                  onClick={() => navigate(`/productdetails/${product._id}`)}
                 >
                   {product.productName}
                 </h2>

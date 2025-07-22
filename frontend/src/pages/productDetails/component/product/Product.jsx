@@ -219,7 +219,7 @@ const Product = () => {
       <div className="container mx-auto px-4 py-12">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center mb-6 text-gray-700 hover:text-red-500 transition-colors"
+          className="flex items-center mb-6 text-gray-700 hover:text-red-500 transition-colors mt-20"
         >
           <FiChevronLeft className="mr-1" size={20} />
           Back to Products

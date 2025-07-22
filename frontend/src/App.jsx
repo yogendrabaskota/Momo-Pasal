@@ -9,7 +9,7 @@ import store from "./store/store";
 import Login from "./pages/auth/login/Login";
 import Register from "./pages/auth/register/Register";
 import ProductDetails from "./pages/productDetails/ProductDetails";
-import CheckOut from "./pages/checkout/Checkout";
+import CheckOut from "./pages/checkout/CheckOut";
 
 import KhaltiSuccess from "./pages/success/KhaltiSuccess";
 import UserProfile from "./pages/profile/UserProfile";
