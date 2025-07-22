@@ -1,5 +1,6 @@
 //const Product = require("../../../model/productModel")
 const Product = require("../../model/productModel");
+const Review = require("../../model/reviewModel");
 
 exports.getProducts = async (req, res) => {
   const products = await Product.find();
@@ -23,25 +24,27 @@ exports.getProduct = async (req, res) => {
       message: "please provide id(productid)",
     });
   }
-  const product = await Product.find({ _id: id });
+
+  const product = await Product.findById(id);
   const productReviews = await Review.find({ productId: id }).populate(
     "userId"
   );
-  if (product.length == 0) {
-    res.status(400).json({
+
+  if (!product) {
+    return res.status(404).json({
       message: "No product found with that id",
       data: {
-        data: [],
-        data2: [],
-      },
-    });
-  } else {
-    res.status(200).json({
-      message: "Product fetched successfully",
-      data: {
-        product,
-        productReviews,
+        product: null,
+        productReviews: [],
       },
     });
   }
+
+  res.status(200).json({
+    message: "Product fetched successfully",
+    data: {
+      product: [product],
+      productReviews: productReviews,
+    },
+  });
 };

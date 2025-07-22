@@ -57,7 +57,13 @@ const server = app.listen(PORT, () => {
   console.log(`server has started at PORT ${PORT}`);
 });
 
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173", // frontend origin
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 io.on("connection", (Socket) => {
   console.log("Socket Id", Socket.id);
 });

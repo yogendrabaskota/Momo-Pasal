@@ -1,41 +1,100 @@
 const Product = require("../../../model/productModel");
 const User = require("../../../model/userModel");
+const mongoose = require("mongoose");
+
+// exports.addToCart = async (req, res) => {
+//   // userId , productId
+//   const userId = req.user.id;
+//   const { productId } = req.params;
+//   const { quantity = 1 } = req.body;
+//   if (!productId) {
+//     return res.status(400).json({
+//       message: "Please provide ProductId",
+//     });
+//   }
+//   const productExist = await Product.findById(productId);
+//   if (!productExist) {
+//     return res.status(404).json({
+//       message: "No product with that productId",
+//     });
+//   }
+//   const user = await User.findById(userId);
+//   // check if that productId already exist or not , yeti xa vaney qty matra badaunu paryo na vaye productId
+//   const existingCartItem = user.cart.find((item) =>
+//     item.product.equals(productId)
+//   );
+
+//   if (existingCartItem) {
+//     existingCartItem.quantity += quantity;
+//   } else {
+//     user.cart.push({
+//       product: productId,
+//       quantity: quantity,
+//     });
+//   }
+//   await user.save();
+//   const updatedUser = await User.findById(userId).populate("cart.product");
+//   res.status(200).json({
+//     message: "Product added to cart",
+//     data: updatedUser.cart,
+//   });
+// };
 
 exports.addToCart = async (req, res) => {
-  // userId , productId
-  const userId = req.user.id;
-  const { productId } = req.params;
-  if (!productId) {
-    return res.status(400).json({
-      message: "Please provide ProductId",
-    });
-  }
-  const productExist = await Product.findById(productId);
-  if (!productExist) {
-    return res.status(404).json({
-      message: "No product with that productId",
-    });
-  }
-  const user = await User.findById(userId);
-  // check if that productId already exist or not , yeti xa vaney qty matra badaunu paryo na vaye productId
-  const existingCartItem = user.cart.find((item) =>
-    item.product.equals(productId)
-  );
+  try {
+    const userId = req.user.id;
+    const { productId } = req.params;
+    const { quantity = 1 } = req.body;
 
-  if (existingCartItem) {
-    existingCartItem.quantity += 1;
-  } else {
-    user.cart.push({
-      product: productId,
-      quantity: 1,
+    // Validate productId
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({ message: "Invalid product ID" });
+    }
+
+    // Check if product exists
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Find user and update cart
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if product already in cart
+    const cartItemIndex = user.cart.findIndex(
+      (item) => item.product.toString() === productId
+    );
+
+    if (cartItemIndex > -1) {
+      // Update quantity if product exists in cart
+      user.cart[cartItemIndex].quantity += Number(quantity);
+    } else {
+      // Add new item to cart
+      user.cart.push({
+        product: productId,
+        quantity: Number(quantity),
+      });
+    }
+
+    await user.save();
+
+    // Populate product details when returning
+    const updatedUser = await User.findById(userId).populate("cart.product");
+
+    return res.status(200).json({
+      message: "Product added to cart",
+      data: updatedUser.cart,
+    });
+  } catch (error) {
+    console.error("Add to cart error:", error);
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
     });
   }
-  await user.save();
-  const updatedUser = await User.findById(userId).populate("cart.product");
-  res.status(200).json({
-    message: "Product added to cart",
-    data: updatedUser.cart,
-  });
 };
 
 exports.getMyCartItems = async (req, res) => {

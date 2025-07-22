@@ -2,6 +2,9 @@ const {
   createProduct,
   deleteProduct,
   editProduct,
+  getOrdersOfAProduct,
+  updateProductStatus,
+  updateProductStockAndPrice,
 } = require("../../controller/admin/product/productController");
 const {
   getProduct,
