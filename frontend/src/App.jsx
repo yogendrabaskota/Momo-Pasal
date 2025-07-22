@@ -16,9 +16,10 @@ import UserProfile from "./pages/profile/UserProfile";
 import MyOrders from "./pages/myOrders/MyOrders";
 import Footer from "./globals/components/footer/Footer";
 import OrderDetails from "./pages/orderDetails/OrderDetails";
-import ForgotPassword from "./pages/auth/forgotPassword/ForgotPassword";
+
 import VerifyOtp from "./pages/auth/verifyOtp/VerifyOtp";
 import ResetPassword from "./pages/auth/resetPassword/ResetPassword";
+import ForgotPassword from "./pages/auth/forgotPassword/ForgotPassword";
 
 import { io } from "socket.io-client";
 export const socket = io("http://localhost:3000/", {
