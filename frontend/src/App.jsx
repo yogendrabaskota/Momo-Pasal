@@ -17,8 +17,8 @@ import UserProfile from "./pages/profile/UserProfile";
 import MyOrders from "./pages/myOrders/MyOrders";
 import Footer from "./globals/components/footer/Footer";
 
-import VerifyOtp from "./pages/auth/verifyOtp/VerifyOtp";
-import ResetPassword from "./pages/auth/resetPassword/ResetPassword";
+import VerifyOtp from "./pages/auth/VerifyOtp/VerifyOtp";
+import ResetPassword from "./pages/auth/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/auth/forgotPassword/ForgotPassword";
 import OrderDetails from "./pages/orderDetails/OrderDetails";
 
