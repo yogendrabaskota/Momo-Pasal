@@ -18,34 +18,13 @@ const cartRoute = require("./routes/user/cart/cartController");
 const orderRoute = require("./routes/user/order/orderRoute");
 const paymentRoute = require("./routes/user/paymentRoute");
 
-//end routes
+//telling nodejs to give access to the uploads folder
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 //telling nodejs to give access to the uploads folder
-
-
-app.use(express.json())
-app.use(express.urlencoded({extended : true}))
-
-//telling nodejs to give access to the uploads folder 
-app.use(express.static("uploads"))
-
-
-connectDatabase()
-const cors = require("cors")
-app.use(cors({
-    origin : '*'
-}))
-
-app.get("/",(req,res)=>{  
-    res.status(200).json({
-    message : "I am here"
-    })
-})
-
+app.use(express.static("uploads"));
 
 connectDatabase();
 
@@ -85,6 +64,5 @@ io.on("connection", (Socket) => {
 
 function getSocketIo() {
   return io;
-
 }
 module.exports.getSocketIo = getSocketIo;

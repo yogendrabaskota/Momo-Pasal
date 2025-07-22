@@ -16,6 +16,7 @@ exports.registerUser = async (req, res) => {
   if (userFound.length > 0) {
     return res.status(400).json({
       message: "user with that email already exist. please use unique email",
+      data: [],
     });
   }
 
@@ -56,6 +57,7 @@ exports.loginUser = async (req, res) => {
 
     res.status(200).json({
       message: " User logged in successfully ",
+      data: userFound,
       token: token,
     });
   } else {
@@ -92,8 +94,9 @@ exports.forgetPassword = async (req, res) => {
     subject: "OTP for your momo account",
     message: `This is your otp.\n ${otp} \nDon't share it with anyone`,
   });
-  res.json({
+  res.status(200).json({
     message: "OTP sent successfully",
+    data: email,
   });
 };
 
@@ -106,13 +109,15 @@ exports.verifyotp = async (req, res) => {
     });
   }
   //Check the otp is correct or not
-  const userExists = await User.find({ userEmail: email });
+  const userExists = await User.find({ userEmail: email }).select(
+    "+otp +isOtpVerifies"
+  );
   if (userExists.length == 0) {
     return res.status(404).json({
       message: "Email is not registered",
     });
   }
-  if (userExists[0].otp !== otp) {
+  if (userExists[0].otp !== otp * 1) {
     res.status(400).json({
       message: "Invalid otp",
     });
@@ -142,13 +147,15 @@ exports.resetPassword = async (req, res) => {
     });
   }
 
-  const userExist = await User.find({ userEmail: email });
+  const userExist = await User.find({ userEmail: email }).select(
+    "+isOtpVerified"
+  );
   if (userExist.length == 0) {
     return res.status(404).json({
       message: "User email not registered",
     });
   }
-  if (userExist[0].isOtpVerified !== true) {
+  if (userExist[0].isOtpVerified != true) {
     return res.status(403).json({
       message: "You cannot perform this action",
     });
