@@ -20,7 +20,7 @@ import Footer from "./globals/components/footer/Footer";
 import VerifyOtp from "./pages/auth/VerifyOtp/VerifyOtp";
 import ResetPassword from "./pages/auth/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/auth/forgotPassword/ForgotPassword";
-import OrderDetails from "./pages/orderDetails/OrderDetails";
+import OrderDetails from "./pages/orderDetails/OrderDetails.jsx";
 
 import { io } from "socket.io-client";
 export const socket = io("http://localhost:3000/", {
