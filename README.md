@@ -4,8 +4,6 @@ MOMO Pasal is a full-stack, single-vendor web application designed for a local m
 
 ---
 
----
-
 ## **Click [Here](https://momo-pasal.vercel.app/) to visit site**
 
 ---
@@ -132,7 +130,7 @@ cd momo-pasal
 ![Product Details](frontend/public/productdetails.png)
 ![Cart](frontend/public/cart.png)
 ![Checkout](frontend/public/checkout.png)
-![My Orders](rontend/public/orders.png)
+![My Orders](frontend/public/orders.png)
 ![User Profile](frontend/public/profile.png)
 
 ## Feedback

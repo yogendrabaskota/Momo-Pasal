@@ -48,7 +48,7 @@ export default function Navbar() {
               className="ml-2 text-2xl font-bold"
               style={{ color: "#E63946" }}
             >
-              Digital <span style={{ color: "#2D3142" }}>MoMo</span>
+              MOMO <span style={{ color: "#2D3142" }}>Pasal</span>
             </span>
           </div>
 
