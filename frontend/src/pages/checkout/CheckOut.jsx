@@ -28,7 +28,7 @@ const CheckOut = () => {
   const { status, data } = useSelector((state) => state.checkout);
 
   const subTotal = products.reduce(
-    (amount, item) => item.quantity * item.product.productPrice + amount,
+    (amount, item) => item?.quantity * item?.product?.productPrice + amount,
     0
   );
   const shippingAmount = 100;
@@ -90,7 +90,7 @@ const CheckOut = () => {
 
   return (
     <div className="min-h-screen py-12" style={{ backgroundColor: "#FFF8F0" }}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-20">
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Order Summary Section */}
           <div
@@ -114,15 +114,15 @@ const CheckOut = () => {
                   >
                     <img
                       className="w-20 h-20 rounded-lg object-cover"
-                      src={product.product.productImage}
-                      alt={product.product.productName}
+                      src={product?.product?.productImage}
+                      alt={product?.product?.productName}
                     />
                     <div className="flex-1">
                       <h3
                         className="font-semibold"
                         style={{ color: "#2D3142" }}
                       >
-                        {product.product.productName}
+                        {product?.product?.productName}
                       </h3>
                       <div className="flex justify-between items-center mt-2">
                         <span className="text-sm" style={{ color: "#2D3142" }}>
@@ -132,7 +132,7 @@ const CheckOut = () => {
                           className="font-bold"
                           style={{ color: "#E63946" }}
                         >
-                          Rs. {product.product.productPrice}
+                          Rs. {product?.product?.productPrice}
                         </span>
                       </div>
                     </div>

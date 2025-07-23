@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { fetchProfile, logOut } from "../../../store/authSlice";
 import { fetchCartItems } from "../../../store/cartSlice";
 import { useEffect } from "react";
+import logo from "../../../../public/logo.png";
 import {
   FaShoppingCart,
   FaUser,
@@ -42,11 +43,7 @@ export default function Navbar() {
             className="flex items-center cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <img
-              src="../../../../public/logo.png"
-              className="w-10 h-10"
-              alt="Digital MoMo logo"
-            />
+            <img src={logo} className="w-10 h-10" alt="Digital MoMo logo" />
             <span
               className="ml-2 text-2xl font-bold"
               style={{ color: "#E63946" }}
