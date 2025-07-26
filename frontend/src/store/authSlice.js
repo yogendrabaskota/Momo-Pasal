@@ -8,7 +8,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     data: [],
-    status: STATUSES.SUCCESS,
+    status: STATUSES.LOADING,
     token: "",
     forgotPasswordData: {
       email: null,
@@ -102,10 +102,7 @@ export function forgotPassword(data) {
   return async function forgotPasswordThunk(dispatch) {
     dispatch(setStatus(STATUSES.LOADING));
     try {
-      const response = await APIAuthenticated.post(
-        "auth/forgotPassword/",
-        data
-      );
+      const response = await APIAuthenticated.post("auth/forgetPassword", data);
       dispatch(setEmail(response.data.data));
 
       dispatch(setStatus(STATUSES.SUCCESS));
@@ -124,6 +121,7 @@ export function verifyotp(data) {
       // dispatch(setUser(response.data.data))
       dispatch(setEmail(data.email));
       dispatch(setForgotPasswordDataStatus(STATUSES.SUCCESS));
+      dispatch(setStatus(STATUSES.SUCCESS));
     } catch (error) {
       console.log(error);
       dispatch(setStatus(STATUSES.ERROR));
