@@ -22,7 +22,7 @@ exports.initiateKhaltiPayment = async (req, res) => {
     });
   }
   const data = {
-    return_url: "http://localhost:5173/success",
+    return_url: "http://localhost:5173/myorders",
     purchase_order_id: orderId,
     amount: amount * 100,
     website_url: "http://localhost:3000/",

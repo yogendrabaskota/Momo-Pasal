@@ -52,7 +52,7 @@ const CheckOut = () => {
     if (status === STATUSES.SUCCESS && paymentMethod === "COD") {
       return navigate("/myorders");
     }
-    if (status === STATUSES.SUCCESS && paymentMethod === "khalti") {
+    if (status === STATUSES.SUCCESS && paymentMethod === "Khalti") {
       const { totalAmount, _id: orderId } = data[data.length - 1];
       handleKhalti(orderId, totalAmount);
     }
@@ -63,7 +63,7 @@ const CheckOut = () => {
       const currentOrder = data[data.length - 1];
       if (paymentMethod === "COD") {
         navigate("/myorders");
-      } else if (paymentMethod === "khalti") {
+      } else if (paymentMethod === "Khalti") {
         const { totalAmount, _id: orderId } = currentOrder;
         handleKhalti(orderId, totalAmount);
       }
@@ -178,15 +178,15 @@ const CheckOut = () => {
 
                 <div className="flex items-center">
                   <input
-                    id="khalti"
+                    id="Khalti"
                     type="radio"
-                    value="khalti"
+                    value="Khalti"
                     name="payment"
                     onChange={handlePaymentChange}
                     className="h-5 w-5"
                     style={{ accentColor: "#E63946" }}
                   />
-                  <label htmlFor="khalti" className="ml-3 flex items-center">
+                  <label htmlFor="Khalti" className="ml-3 flex items-center">
                     <FaRegCreditCard
                       className="mr-2"
                       style={{ color: "#5C2D91" }}
@@ -341,12 +341,12 @@ const CheckOut = () => {
                   className="w-full py-3 px-4 rounded-lg font-bold mt-6 transition-colors"
                   style={{
                     backgroundColor:
-                      paymentMethod === "khalti" ? "#5C2D91" : "#E63946",
+                      paymentMethod === "Khalti" ? "#5C2D91" : "#E63946",
                     color: "white",
                   }}
                   disabled={products.length === 0}
                 >
-                  {paymentMethod === "khalti"
+                  {paymentMethod === "Khalti"
                     ? "Pay with Khalti"
                     : "Place Order"}
                 </button>

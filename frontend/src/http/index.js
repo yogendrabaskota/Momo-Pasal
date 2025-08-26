@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   baseURL: "https://momo-pasal.onrender.com/api",
+  // baseURL: "http://localhost:3000/api",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -10,6 +11,7 @@ const API = axios.create({
 
 const APIAuthenticated = axios.create({
   baseURL: "https://momo-pasal.onrender.com/api",
+  // baseURL: "http://localhost:3000/api",
   headers: {
     "content-Type": "application/json",
     Accept: "application/json",
